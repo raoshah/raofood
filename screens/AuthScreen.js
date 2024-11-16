@@ -5,21 +5,20 @@ import { registerUser, loginUser } from '../reducer/authSlice';
 
 
 const AuthScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setName] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const { authToken, isLoading, error } = useSelector((state) => state.auth);
 
   const handleRegister = () => {
-    dispatch(registerUser({ name, email, password }));
+    dispatch(registerUser({ username, password }));
   };
 
   const handleLogin = () => {
-    dispatch(loginUser({ name, password }));
+    dispatch(loginUser({ username, password }));
   };
 
-  
+
 
   return (
     <View style={styles.container}>
@@ -27,7 +26,7 @@ const AuthScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Name"
-        value={name}
+        value={username}
         onChangeText={setName}
       />
       <TextInput
@@ -42,7 +41,20 @@ const AuthScreen = () => {
         <Button title="Login" onPress={handleLogin} disabled={isLoading} />
       </View>
       {isLoading && <ActivityIndicator size="small" color="#0000ff" />}
-      {error && <Text style={styles.error}>{error}</Text>}
+      {error && (
+        <View style={styles.errorContainer}>
+          {typeof error === 'object' && error !== null ? (
+            Object.entries(error).map(([field, messages], index) => (
+              <Text key={index} style={styles.error}>
+                {field}: {Array.isArray(messages) ? messages.join(', ') : messages}
+              </Text>
+            ))
+          ) : (
+            <Text style={styles.error}>{error}</Text>
+          )}
+        </View>
+      )}
+
     </View>
   );
 };
