@@ -1,1 +1,1 @@
-export const API_URL = 'https://raosha.vercel.app'; 
+export const API_URL = 'https://raofoodapi.vercel.app'; 

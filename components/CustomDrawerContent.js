@@ -1,10 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { logoutUser } from '../reducer/authSlice';
 
 function CustomDrawerContent(props) {
   const { authToken } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const logout = () => {
+    dispatch(logoutUser())
+  }
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.header}>
@@ -19,7 +24,7 @@ function CustomDrawerContent(props) {
       </View>
       <DrawerItemList {...props} />
       <View style={styles.footer}>
-        <Button title="Logout" color="red" onPress={() => alert('Logged out')} />
+        <Button title="Logout" color="red" onPress={logout} />
       </View>
     </DrawerContentScrollView>
   );
