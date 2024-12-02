@@ -11,9 +11,12 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import LoginScreen from './screens/LoginScreen';
+import CartScreen from './screens/CartScreen';
 
 
 import CustomDrawerContent from './components/CustomDrawerContent';
+import ProductDetails from './components/ProductDetails';
+import DrawerToggleButton from './components/DrawerToggleButton';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -23,7 +26,26 @@ const HomeStack = () => (
     <Stack.Screen
       name="Home"
       component={HomeScreen}
-      options={{ headerShown: true, title: 'Home' }}
+      options={({ navigation }) => ({
+        headerRight: () => (
+          <DrawerToggleButton navigation={navigation} />
+        ),
+      })}
+    />
+    <Stack.Screen
+      name="ProductDetails"
+      component={ProductDetails}
+      options={({ route, navigation }) => ({
+        title: route.params.product.name,
+        headerRight: () => (
+          <DrawerToggleButton navigation={navigation} />
+        ),
+      })}
+    />
+    <Stack.Screen
+      name="Cart"
+      component={CartScreen}
+      options={{ headerShown: true, title: 'Cart' }}
     />
 
   </Stack.Navigator>
@@ -71,7 +93,7 @@ export default function App() {
           initialRouteName="HomeStack"
           drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{
-            headerShown: true,
+            headerShown: false,
             drawerStyle: { backgroundColor: '#f0f0f0', width: 300 },
             drawerLabelStyle: { fontSize: 18, color: '#333', fontWeight: 'bold' },
           }}
